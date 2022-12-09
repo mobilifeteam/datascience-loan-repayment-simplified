@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def prepare_accumulated_loan_payment(loan_payment_df, loan_details_df):
