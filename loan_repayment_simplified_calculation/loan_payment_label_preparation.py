@@ -1,4 +1,8 @@
 import pandas as pd
+from datetime import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 
 def define_installment_label(loan_payment_view):
@@ -63,9 +67,13 @@ def define_loan_repayment_simplified(loan_payment_view):
 
 def define_loan_payment(loan_payment_view):
 
+    log.info("Loan Payment Label Preparation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     loan_payment_with_installment_label = define_installment_label(loan_payment_view)
     loan_payment_with_account_status = define_opened_closed_status(loan_payment_with_installment_label)
     loan_payment_with_due_date_payment = define_due_date_payment(loan_payment_with_account_status)
     loan_payment_with_final_label = define_loan_repayment_simplified(loan_payment_with_due_date_payment)
+
+    log.info("Loan Payment Label Preparation (Finish): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
     return loan_payment_with_final_label
