@@ -12,6 +12,7 @@ from loan_repayment_simplified_calculation.loan_payment_label_preparation import
 from loan_repayment_simplified_calculation.loan_repayment_simplified_preparation import *
 from loan_repayment_simplified_calculation.loan_repayment_simplified_concatenation import *
 
+import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
