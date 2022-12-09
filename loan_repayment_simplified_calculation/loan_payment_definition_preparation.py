@@ -16,21 +16,22 @@ def prepare_actual_payment_date(loan_payment_view):
 
 def create_loan_payment_label(loan_payment_view):
 
-    loan_payment_view.loc[(loan_payment_view['latest_transaction_datetime' ] <loan_payment_view['actual_payment_datetime']) &
-                    (loan_payment_view['installment_period'] == 0), 'is_payment'] = 'self-payment'
+    loan_payment_view.loc[
+        (loan_payment_view['latest_transaction_datetime'] < loan_payment_view['actual_payment_datetime']) & (
+                    loan_payment_view['installment_period'] == 0), 'is_payment'] = 'self-payment'
     loan_payment_view.loc[(loan_payment_view['latest_transaction_datetime'].isna()) & (
                 loan_payment_view['installment_period'] == 0), 'is_payment'] = 'not due-date'
 
     loan_payment_view.loc[
         (loan_payment_view['latest_transaction_datetime'] < loan_payment_view['actual_payment_datetime']) & (
-                    loan_payment_view['installment_period'] == 1), 'is_payment'] = 'self-payment'
+                    loan_payment_view['installment_period'] > 0), 'is_payment'] = 'self-payment'
     loan_payment_view.loc[
         (loan_payment_view['latest_transaction_datetime'] >= loan_payment_view['actual_payment_datetime']) &
         (loan_payment_view['latest_transaction_datetime'] <= loan_payment_view['actual_payment_datetime_end']) & (
-                    loan_payment_view['installment_period'] == 1), 'is_payment'] = 'auto-deduct'
+                    loan_payment_view['installment_period'] > 0), 'is_payment'] = 'auto-deduct'
     loan_payment_view.loc[
         (loan_payment_view['latest_transaction_datetime'] > loan_payment_view['actual_payment_datetime_end']) & (
-                    loan_payment_view['installment_period'] == 1), 'is_payment'] = 'self-payment'
+                    loan_payment_view['installment_period'] > 0), 'is_payment'] = 'self-payment'
     loan_payment_view.loc[loan_payment_view['is_payment'].isna(), 'is_payment'] = 'no payment'
 
     return loan_payment_view
