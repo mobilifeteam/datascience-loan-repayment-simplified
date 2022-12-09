@@ -1,5 +1,9 @@
 import pandas as pd
 import numpy as np
+from datetime import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 
 def prepare_accumulated_loan_payment(loan_payment_df, loan_details_df):
@@ -56,6 +60,8 @@ def accumulated_loan_payment_calculation(loan_payment_df, loan_details_df, today
     used_columns = ['transaction_customer_id', 'account_number', 'contract_date', 'debt_relief_month',
                     'contract_amount' ,'month_end_payment']
 
+    log.info("Accumulated Loan Payment Calculation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     accumulated_loan_payment = prepare_accumulated_loan_payment(loan_payment_df, loan_details_df)
 
     accumulated_loan_payment_with_current_payments = prepare_accumulated_payment_for_missed_current_payments(
@@ -68,5 +74,6 @@ def accumulated_loan_payment_calculation(loan_payment_df, loan_details_df, today
     final_accumulated_loan_payment = final_accumulated_loan_payment.drop_duplicates(subset=['account_number']
                                                                                     ,keep='last')
 
+    log.info("Accumulated Loan Payment Calculation (Finish): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
     return final_accumulated_loan_payment
