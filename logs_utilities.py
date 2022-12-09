@@ -59,6 +59,19 @@ def is_wrong_data_format(df, column_name):
         return False
 
 
+def remove_duplicated_transactions(txn_df, column_name, warning_pattern):
+    case = 'Some rows from input data have duplicated transaction_id'
+    incomplete_df = txn_df[txn_df[column_name].duplicated()]
+
+    if len(incomplete_df) != 0:
+        number_of_rows_before = len(txn_df)
+        txn_df.drop_duplicates(subset=[column_name], inplace=True)
+        number_of_rows_after = len(txn_df)
+        create_warning_log(warning_pattern, [case, incomplete_df[:1], number_of_rows_before, number_of_rows_after])
+
+    return txn_df
+
+
 def replace_with_correct_values(txn_df, input_string, output_string, warning_pattern):
     case = 'Some rows from input data contain {}'.format(input_string)
     incomplete_df = txn_df[txn_df.eq(input_string).any(axis=1)]
@@ -126,5 +139,16 @@ def handle_incomplete_installment(txn_df, required_columns):
     warning_pattern = "Case:{} \n Number of rows before cleaned: {} \n Example:{} \n Number of rows after cleaned: {}"
     cleaned_txn = incorrect_data(txn_df, 'installment_period == 0', 'installment_period != 0', warning_pattern)
     cleaned_txn = remove_missing_value(cleaned_txn, required_columns, warning_pattern)
+
+    return cleaned_txn
+
+
+def handle_incomplete_transactions(txn_df, required_columns):
+
+    warning_pattern="Case:{} \n Number of rows before cleaned: {} \n Example:{} \n Number of rows after cleaned: {}"
+    cleaned_txn = remove_duplicated_transactions(txn_df, "transaction_id", warning_pattern)
+    cleaned_txn = replace_with_correct_values(cleaned_txn, "\\N", np.nan, warning_pattern)
+    cleaned_txn = remove_missing_value(cleaned_txn, required_columns, warning_pattern)
+    cleaned_txn = incorrect_data(cleaned_txn,'transaction_type == "loan_payment"', 'transaction_type != "loan_payment"' , warning_pattern)
 
     return cleaned_txn
