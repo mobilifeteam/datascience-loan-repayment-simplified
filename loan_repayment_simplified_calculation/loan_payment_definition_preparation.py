@@ -1,5 +1,10 @@
 from pandas.tseries.offsets import DateOffset
 import pandas as pd
+from datetime import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
+
 
 def prepare_actual_payment_date(loan_payment_view):
 
@@ -52,8 +57,12 @@ def create_total_payment(loan_payment_view):
 
 def prepare_loan_payment_definition(loan_payment_view):
 
+    log.info("Loan Payment Definition Preparation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     loan_payment_with_actual_datetime = prepare_actual_payment_date(loan_payment_view)
     loan_payment_with_payment_label = create_loan_payment_label(loan_payment_with_actual_datetime)
     loan_payment_with_required_installment = create_total_payment(loan_payment_with_payment_label)
+
+    log.info("Loan Payment Definition Preparation (Finish: {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
     return loan_payment_with_required_installment
