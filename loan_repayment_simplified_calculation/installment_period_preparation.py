@@ -1,4 +1,8 @@
 import pandas as pd
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
+from datetime import datetime
 
 
 def prepare_mapping_batch_payment(input_mapping_batch_payment_path, sheet_name):
@@ -51,8 +55,12 @@ def prepare_installment_period(dlor_with_loan_product_details_df,
                                input_mapping_batch_path,
                                sheet_name):
 
+    log.info("Installment Period Preparation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     input_mapping_batch = prepare_mapping_batch_payment(input_mapping_batch_path, sheet_name)
 
     updated_dlor = create_installment_period(dlor_with_loan_product_details_df, today_datetime, input_mapping_batch)
+
+    log.info("Installment Period Preparation (Finish): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
     return updated_dlor
