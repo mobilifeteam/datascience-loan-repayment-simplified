@@ -1,6 +1,7 @@
 import pandas as pd
 import glob
 import logging
+import json
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("Loan_Repayment_Simplified")
@@ -21,3 +22,11 @@ def read_multiple_file(file_path, separate, header=None, directory=True):
         except FileNotFoundError as e:
             log.error('The whole input file is missing or cannot be read ({})'.format(file_path), exc_info=True)
     return final_df
+
+
+def read_json(file_path):
+
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+
+    return data
