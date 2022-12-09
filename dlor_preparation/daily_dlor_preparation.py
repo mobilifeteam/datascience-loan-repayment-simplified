@@ -1,12 +1,26 @@
 import pandas as pd
 import numpy as np
 from utilities import read_multiple_file
+from logs_utilities import *
+import logging
+import sys
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 
 def prepare_mapping_batch_payment(input_path, sheet_name):
+    try:
+        batch_df = pd.read_excel(input_path, sheet_name=sheet_name)
+        log.info('Read Mapping Batch Payment Successfully')
+    except FileNotFoundError as e:
+        log.error('Mapping Batch Payment input file is not found({})'.format(input_path), exc_info=True)
+        sys.exit(-1)
 
-    batch_df = pd.read_excel(input_path, sheet_name=sheet_name)
     batch_df.columns = ['contract_datetime', 'first_payment_date']
+
+    batch_df = handle_incomplete_mapping_batch_payment(batch_df,['contract_datetime', 'first_payment_date'])
+
     batch_df['contract_datetime'] = pd.to_datetime(batch_df['contract_datetime'])
 
     return batch_df
@@ -15,6 +29,11 @@ def prepare_mapping_batch_payment(input_path, sheet_name):
 def prepare_dlor_report(dlor_path, input_mapping_batch_df, column_name):
 
     dlor = read_multiple_file(dlor_path, "\t", header=None, directory=True)
+
+    if is_dataframe_empty(dlor):
+        log.error("DLOR Report is missing or cannot be read")
+        sys.exit(-1)
+
     dlor.columns = column_name
 
     dlor = dlor[['transaction_customer_id', 'account_number', 'product_name', 'contract_datetime', 'contract_amount']]
@@ -26,11 +45,26 @@ def prepare_dlor_report(dlor_path, input_mapping_batch_df, column_name):
                           & (dlor_clean['transaction_customer_id'].notna())
                           ]
 
-    sel_dlor['contract_datetime'] = pd.to_datetime(sel_dlor['contract_datetime'], format="%d/%m/%Y")
+    sel_dlor['contract_datetime'] = pd.to_datetime(sel_dlor['contract_datetime'], format="%d/%m/%Y", errors='coerce')
+
+    if is_incorrect_datetime(sel_dlor, 'contract_datetime'):
+        log.error("Unable to convert contract_datetime to proper format (%d/%m/%Y)")
+        sys.exit(-1)
+
     sel_dlor['transaction_customer_id'] = sel_dlor['transaction_customer_id'].astype(int)
     sel_dlor['account_number'] = sel_dlor['account_number'].str.upper()
 
+    sel_dlor = handle_incomplete_dlor_report(sel_dlor, ['transaction_customer_id', 'account_number', 'product_name', 'contract_datetime', 'contract_amount'])
+
+    if is_lower_string(sel_dlor,'account_number'):
+        log.error("DLOR Report cannot convert account_number to upper string")
+        sys.exit(-1)
+
     dlor_with_mapping_batch = sel_dlor.merge(input_mapping_batch_df, how='left', on='contract_datetime')
+
+    if is_dataframe_empty(dlor_with_mapping_batch):
+        log.error("contract_datetime from the two input does not match")
+        sys.exit(-1)
 
     return dlor_with_mapping_batch
 
