@@ -1,0 +1,13 @@
+{
+ "product_name":"MYCREDIT10000",
+ "input_mapping_batch_path":"/loan_repayment_dashboard/20221202-Map_batch_payment_date.xlsx",
+ "sheet_name":"payment",
+ "loan_product_details_path":"/loan_repayment_dashboard/loan_product_details_simplified.json",
+ "daily_dlor_path":"/loan_repayment_dashboard/intermediate/intermediate_dlor_",
+ "txn_path":"/loan_repayment/txn/txn_mycredit_",
+ "txn_columns":["transaction_id", "transaction_customer_id", "transaction_amount", "transaction_datetime", "transaction_direction", "transaction_type", "destination_acct_product_type", "destination_acct_no", "destination_acct_type", "destination_acct_sub_type", "destination_acct_market_code","destination_ending_balance","loan_principal_amount","loan_interest_amount","loan_penalty_amount","loan_fee_amount"],
+ "loan_payment_simplified_output_path":"/loan_repayment_dashboard/result/loan_repayment_simplified_",
+ "dlor_daily_output_path":"/loan_repayment_dashboard/dlor_prep/dlor_update_",
+ "multiple_simplified_path":"/loan_repayment_dashboard/result/*",
+ "multiple_loan_simplified_output_path":"/loan_repayment_simplified/loan_repayment_simplified_"
+}
