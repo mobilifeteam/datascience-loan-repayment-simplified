@@ -1,7 +1,8 @@
 import pandas as pd
+from utilities import read_multiple_file
 
 
-def prepare_loan_payment_transactions(loan_payment,
+def prepare_loan_payment_transactions(loan_payment_path,
                                       txn_columns):
 
     column_type_dict = {'account_number': str,
@@ -12,6 +13,9 @@ def prepare_loan_payment_transactions(loan_payment,
     transaction_columns = ['transaction_id', 'transaction_customer_id', 'transaction_type', 'transaction_datetime',
                         'destination_acct_no', 'destination_ending_balance', 'loan_principal_amount',
                         'loan_interest_amount']
+
+    loan_payment = read_multiple_file(loan_payment_path, "\t", None, directory=True)
+    loan_payment.columns = txn_columns
 
     loan_payment.rename(columns={'destination_acct_no': 'account_number'}, inplace=True)
 
