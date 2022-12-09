@@ -120,3 +120,11 @@ def handle_incomplete_dlor_report(txn_df, required_columns):
 
     return cleaned_txn
 
+
+def handle_incomplete_installment(txn_df, required_columns):
+
+    warning_pattern = "Case:{} \n Number of rows before cleaned: {} \n Example:{} \n Number of rows after cleaned: {}"
+    cleaned_txn = incorrect_data(txn_df, 'installment_period == 0', 'installment_period != 0', warning_pattern)
+    cleaned_txn = remove_missing_value(cleaned_txn, required_columns, warning_pattern)
+
+    return cleaned_txn
