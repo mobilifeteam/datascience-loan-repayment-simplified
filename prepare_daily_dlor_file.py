@@ -21,7 +21,6 @@ def main():
                                            today_date.strftime("%Y%m%d"))
     dlor_report_columns = config['dlor_report_columns']
     daily_update_dlor_path = "{}{}.tsv".format(config['daily_update_dlor_path'],previous_2_days_date.strftime("%Y%m%d"))
-    print(daily_update_dlor_path)
     input_mapping_batch_path = config['input_mapping_batch_path']
     sheet_name = config['sheet_name']
     output_path = "{}{}.tsv".format(config['output_path'],today_date.strftime("%Y%m%d"))
