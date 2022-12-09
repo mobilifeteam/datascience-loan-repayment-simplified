@@ -3,6 +3,11 @@ import sys
 from dlor_preparation.daily_dlor_preparation import prepare_dlor_daily
 from utilities import *
 from pandas.tseries.offsets import DateOffset
+import logging
+from datetime import datetime
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 
 def main():
@@ -25,6 +30,8 @@ def main():
     sheet_name = config['sheet_name']
     output_path = "{}{}.tsv".format(config['output_path'],today_date.strftime("%Y%m%d"))
 
+    log.info("Daily DLOR Preparation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     dlor_daily = prepare_dlor_daily(input_dlor_report_path,
                        dlor_report_columns,
                        daily_update_dlor_path,
@@ -32,6 +39,8 @@ def main():
                        sheet_name)
 
     dlor_daily.to_csv(output_path, sep='\t', index=False)
+
+    log.info("Daily DLOR Preparation (Finish): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
 if __name__ == "__main__":
     main()
