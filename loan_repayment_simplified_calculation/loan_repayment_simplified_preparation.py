@@ -1,5 +1,9 @@
 import pandas as pd
 from functools import reduce
+from datetime import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 
 def agg_all_account(loan_payment_view):
@@ -121,6 +125,9 @@ def update_dlor_report(loan_payment_view):
 
 
 def aggregate_loan_repayment_simplified(loan_payment_view, today_date):
+
+    log.info("Loan Repayment Simplified Aggregation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+
     function_list = [agg_all_account, agg_opened_closed_status, agg_due_date_payment, agg_installment,
                      agg_installment_with_payment_method,
                      agg_total_installment, agg_total_installment_with_payment_method]
@@ -142,5 +149,7 @@ def aggregate_loan_repayment_simplified(loan_payment_view, today_date):
     agg_result_final.rename(columns={'product_name_th': 'product_name'}, inplace=True)
 
     dlor_daily_update = update_dlor_report(loan_payment_view)
+
+    log.info("Loan Repayment Simplified Aggregation (Finish): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
 
     return agg_result_final, dlor_daily_update
