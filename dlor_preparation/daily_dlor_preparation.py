@@ -75,6 +75,8 @@ def prepare_installment_datetime(dlor_view):
     dlor_view['first_payment_date'] = pd.to_datetime(dlor_view['first_payment_date'])
     dlor_view['first_payment_month'] = dlor_view['first_payment_date'].dt.to_period('M')
 
+    dlor_view = handle_incomplete_installment(dlor_view, ['installment_period'])
+
     return dlor_view
 
 
@@ -103,6 +105,10 @@ def prepare_dlor_daily(input_dlor_report_path,
     dlor_report = prepare_dlor_report(input_dlor_report_path, input_mapping_batch, dlor_report_columns)
 
     dlor_report_with_details = prepare_installment_datetime(dlor_report)
+
+    if is_incomplete_column(dlor_report_with_details, ['installment_period']):
+        log.error("installment_period column is missing")
+        sys.exit(-1)
 
     final_dlor_report = combine_dlor(dlor_report_with_details, daily_update_dlor)
 
