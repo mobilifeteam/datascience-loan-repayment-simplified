@@ -1,5 +1,5 @@
 {
-"input_dlor_report_path":"/loan_repayment/dlor/dlor_report_",
+"input_dlor_report_path":"/loan_repayment_dashboard/raw_data/dlor/dlor_report_",
 "dlor_report_columns":["transaction_datetime",
  "transaction_customer_id",
  "dopa_status",
