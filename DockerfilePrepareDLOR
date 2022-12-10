@@ -28,5 +28,5 @@ ENTRYPOINT [ "python3", "/root/prepare_daily_dlor_file.py"]
 # docker run --rm -v /Users/chayanit.ru/Desktop/loan_repayment_simplified/:/loan_repayment_simplified -v /Users/chayanit.ru/PycharmProjects/datascience-loan-repayment-simplified/local_config/:/local_config datascience-loan-repayment-simplified-dlor-preparation:0.0.1 2022-12-08 /local_config/config_daily_dlor_docker
 
 #docker run --rm -v /data/store/view/loan_repayment_dashboard/:/loan_repayment_dashboard -v /data/store/view/loan_repayment/:/loan_repayment datascience-loan-repayment-simplified-dlor-preparation:0.0.1 2022-12-08 /loan_repayment_dashboard/config/config_daily_dlor_docker
-
+#docker run --rm -v /data/store/view/loan_repayment_dashboard/:/loan_repayment_dashboard datascience-loan-repayment-simplified-dlor-preparation:0.0.1 2022-12-08 /loan_repayment_dashboard/config/config_daily_dlor_docker
 
