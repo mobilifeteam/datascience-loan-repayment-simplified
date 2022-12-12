@@ -115,7 +115,11 @@ def update_dlor_report(loan_payment_view):
 
     loan_payment_view['actual_payment_date'] = pd.to_datetime(loan_payment_view['actual_payment_date'])
 
-    loan_payment_view['latest_actual_payment_date'] = loan_payment_view['actual_payment_date']  # Add
+    # loan_payment_view['latest_actual_payment_date'] = loan_payment_view['actual_payment_date']  # Add
+
+    loan_payment_view['latest_actual_payment_date'] = loan_payment_view.apply(
+        lambda row: row['latest_actual_payment_date'] if row['today_date'] < row['actual_payment_date']
+        else row['actual_payment_date'], axis=1)
 
     loan_payment_view['actual_payment_date'] = loan_payment_view.apply(
         lambda row: row['latest_actual_payment_date'] if row['today_date'] < row['actual_payment_date']
