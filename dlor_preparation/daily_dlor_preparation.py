@@ -80,6 +80,17 @@ def prepare_installment_datetime(dlor_view):
     return dlor_view
 
 
+def remove_account(input_removed_account_path, dlor_report_df):
+
+    removed_account_df = pd.read_json(input_removed_account_path)
+    if len(removed_account_df) != 0:
+        removed_account_df['account_number'] = removed_account_df['account_number'].astype(str)
+        dlor_report_df = dlor_report_df[
+            ~dlor_report_df['account_number'].isin(removed_account_df.account_number.unique())]
+
+    return dlor_report_df
+
+
 def combine_dlor(dlor_view, daily_update_dlor):
     selected_columns = ['account_number', 'product_name', 'contract_datetime', 'contract_amount', 'first_payment_date',
                         'first_payment_month', 'installment_period']
@@ -96,6 +107,7 @@ def prepare_dlor_daily(input_dlor_report_path,
                        dlor_report_columns,
                        daily_update_dlor_path,
                        input_mapping_batch_path,
+                        input_removed_account_path,
                        sheet_name):
 
     daily_update_dlor = pd.read_csv(daily_update_dlor_path, sep='\t')
@@ -112,6 +124,6 @@ def prepare_dlor_daily(input_dlor_report_path,
 
     final_dlor_report = combine_dlor(dlor_report_with_details, daily_update_dlor)
 
-    final_dlor_report = final_dlor_report[final_dlor_report['account_number']!='40A8926E53D2A4AE08C72861A5A3AAD1']
+    final_dlor_report_with_removed_account = remove_account(input_removed_account_path, final_dlor_report)
 
-    return final_dlor_report
+    return final_dlor_report_with_removed_account
