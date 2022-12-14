@@ -28,6 +28,7 @@ def main():
     daily_update_dlor_path = "{}{}.tsv".format(config['daily_update_dlor_path'],previous_2_days_date.strftime("%Y%m%d"))
     input_mapping_batch_path = config['input_mapping_batch_path']
     sheet_name = config['sheet_name']
+    input_removed_account_path = config['input_removed_account_path']
     output_path = "{}{}.tsv".format(config['output_path'],today_date.strftime("%Y%m%d"))
 
     log.info("Daily DLOR Preparation (Start): {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
@@ -36,6 +37,7 @@ def main():
                        dlor_report_columns,
                        daily_update_dlor_path,
                        input_mapping_batch_path,
+                        input_removed_account_path,
                        sheet_name)
 
     dlor_daily.to_csv(output_path, sep='\t', index=False)
