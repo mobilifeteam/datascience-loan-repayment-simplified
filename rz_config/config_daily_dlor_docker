@@ -49,5 +49,6 @@
  "daily_update_dlor_path":"/loan_repayment_dashboard/dlor_prep/dlor_update_",
  "input_mapping_batch_path":"/loan_repayment_dashboard/20221202-Map_batch_payment_date.xlsx",
  "output_path":"/loan_repayment_dashboard/intermediate/intermediate_dlor_file_",
- "sheet_name":"contract"
+ "sheet_name":"contract",
+ "input_removed_account_path":"/loan_repayment_dashboard/config/removed_account_number.json"
 }
