@@ -38,10 +38,6 @@ def prepare_dlor_report(dlor_path, input_mapping_batch_df, column_name):
 
     dlor = dlor[['transaction_customer_id', 'account_number', 'product_name', 'contract_datetime', 'contract_amount']]
 
-    dlor = dlor.sort_values(by=['transaction_customer_id', 'contract_datetime'])
-
-    dlor = dlor.drop_duplicates(subset=['transaction_customer_id'], keep='first')
-
     dlor_clean = dlor.replace("\\N", np.nan)
 
     sel_dlor = dlor_clean[(dlor_clean['product_name'] == 'MYCREDIT10000')
@@ -115,5 +111,7 @@ def prepare_dlor_daily(input_dlor_report_path,
         sys.exit(-1)
 
     final_dlor_report = combine_dlor(dlor_report_with_details, daily_update_dlor)
+
+    final_dlor_report = final_dlor_report[final_dlor_report['account_number']!='40A8926E53D2A4AE08C72861A5A3AAD1']
 
     return final_dlor_report
