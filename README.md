@@ -181,12 +181,12 @@ To obtain new dlor customers and update daily dlor file.
    chmod 644 /data/export_to_psql/loan_repayment_simp/loan_repayment_simplified_${useDateStringNew}.tsv.gz
    ```
 ### Run Command
-- Program path: /data/store/view/loan_repayment_dashboard
-- Git Repo: https://github.com/mobilifeteam/datascience-loan-repayment-simplified.git
-- Daily DLOR Preparation Docker: datascience-loan-repayment-simplified-dlor-preparation:0.0.4
-- Loan Repayment Simplified Docker: datascience-loan-repayment-simplified-calculation:0.0.4
+- Program path: `/data/store/view/loan_repayment_dashboard`
+- Git Repo: `https://github.com/mobilifeteam/datascience-loan-repayment-simplified.git`
+- Daily DLOR Preparation Docker: `datascience-loan-repayment-simplified-dlor-preparation:0.0.4`
+- Loan Repayment Simplified Docker: `datascience-loan-repayment-simplified-calculation:0.0.4`
 
-Main Script Path: /data/store/view/loan_repayment_dashboard/scripts/loan_repayment_simplified_automate.sh
+Main Script Path: `/data/store/view/loan_repayment_dashboard/scripts/loan_repayment_simplified_automate.sh`
 ```sh
 cd {Main Script Path}
 nohup loan_repayment_simplified_automate.sh
