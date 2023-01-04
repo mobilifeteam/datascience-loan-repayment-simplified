@@ -24,8 +24,8 @@ COPY loan_repayment_simplified_calculation/* /root/loan_repayment_simplified_cal
 
 ENTRYPOINT [ "python3", "/root/calculate_loan_repayment_simplified.py"]
 
-# docker build -f DockerfileLoanRepaymentSimplified -t datascience-loan-repayment-simplified-calculation:0.0.2 .
-# docker run --rm -v /Users/chayanit.ru/Desktop/loan_repayment_simplified/:/loan_repayment_simplified -v /Users/chayanit.ru/PycharmProjects/datascience-loan-repayment-simplified/local_config/:/local_config datascience-loan-repayment-simplified-calculation:0.0.1 2022-12-08 /local_config/config_loan_repayment_simplified_local_docker
+# docker build -f DockerfileLoanRepaymentSimplified -t datascience-loan-repayment-simplified-calculation:0.0.4 .
+# docker run --rm -v /Users/chayanit.ru/Desktop/loadocker build -f DockerfileLoanRepaymentSimplified -t datascience-loan-repayment-simplified-calculation:0.0.2 .n_repayment_simplified/:/loan_repayment_simplified -v /Users/chayanit.ru/PycharmProjects/datascience-loan-repayment-simplified/local_config/:/local_config datascience-loan-repayment-simplified-calculation:0.0.1 2022-12-08 /local_config/config_loan_repayment_simplified_local_docker
 
 #docker run --rm -v /data/store/view/loan_repayment_dashboard/:/loan_repayment_dashboard datascience-loan-repayment-simplified-calculation:0.0.1 2022-12-08 /loan_repayment_dashboard/config/config_loan_repayment_simplified_docker
 
