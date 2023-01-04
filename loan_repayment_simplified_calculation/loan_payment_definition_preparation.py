@@ -8,15 +8,28 @@ log = logging.getLogger("LOAN_REPAYMENT_SIMPLIFIED")
 
 def prepare_actual_payment_date(loan_payment_view):
 
-    datetime_args = {"hours" :23, "minutes" :59, "second" :59}
+    datetime_args = {"hours": 23, "minutes": 59, "second": 59}
 
-    loan_payment_view['actual_payment_date'] = loan_payment_view['actual_payment_date'].dt.to_timestamp()
+    loan_payment_view['actual_payment_date'] = pd.to_datetime(loan_payment_view['actual_payment_date'])
     loan_payment_view['actual_payment_datetime'] = loan_payment_view.apply(
         lambda row: row['actual_payment_date'] + DateOffset(hours=22), axis=1)
     loan_payment_view['actual_payment_datetime_end'] = loan_payment_view.apply(
         lambda row: row['actual_payment_date'] + DateOffset(**datetime_args), axis=1)
 
     return loan_payment_view
+
+
+# def prepare_actual_payment_date(loan_payment_view):
+#
+#     datetime_args = {"hours" :23, "minutes" :59, "second" :59}
+#
+#     loan_payment_view['actual_payment_date'] = loan_payment_view['actual_payment_date'].dt.to_timestamp()
+#     loan_payment_view['actual_payment_datetime'] = loan_payment_view.apply(
+#         lambda row: row['actual_payment_date'] + DateOffset(hours=22), axis=1)
+#     loan_payment_view['actual_payment_datetime_end'] = loan_payment_view.apply(
+#         lambda row: row['actual_payment_date'] + DateOffset(**datetime_args), axis=1)
+#
+#     return loan_payment_view
 
 
 def create_loan_payment_label(loan_payment_view):
